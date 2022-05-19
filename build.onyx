@@ -1,0 +1,13 @@
+#load "core/std"
+
+use core
+use cbindgen
+
+main :: (args) => {
+    path := module_path(#file);
+
+    result := compile_c_file(string.concat(path, "stb_truetype.c"), string.concat(path, "stb_truetype"));
+    if !result {
+        os.exit(1);
+    }
+}
