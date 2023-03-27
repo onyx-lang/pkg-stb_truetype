@@ -1,7 +1,7 @@
 #load "core/std"
 
-use core
-use cbindgen
+use core {package, *}
+use cbindgen {*}
 
 main :: (args) => {
     path := module_path(#file);
