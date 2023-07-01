@@ -1,6 +1,12 @@
 package stb_truetype
 
-#library "stb_truetype"
+use runtime
+
+#if #defined(runtime.Generated_Foreign_Info) {
+    foreign_block :: __foreign_block
+} else {
+    #library "stb_truetype"
+}
 
 stbtt_pack_context :: struct #size 64 {}
 
@@ -15,14 +21,11 @@ stbtt_aligned_quad :: struct #size 32 {
     x1, y1, s1, t1 : f32;
 }
 
-#foreign "stb_truetype" {
-    stbtt_PackBegin           :: (ctx: ^stbtt_pack_context, pixels: ^u8, width, height, stride_in_bytes, padding: i32) -> i32 ---
+#local __foreign_block :: #foreign "stb_truetype" {
+    stbtt_PackBegin           :: (ctx: ^stbtt_pack_context, pixels: ^u8, width, height, stride_in_bytes, padding: i32, alloc_context: rawptr = null) -> i32 ---
     stbtt_PackEnd             :: (ctx: ^stbtt_pack_context) -> void ---
     stbtt_PackFontRange       :: (ctx: ^stbtt_pack_context, fontdata: ^u8, font_index: i32, font_size: f32, first_unicode_char_in_range: i32, num_chars_in_range: i32, chardata_for_range: ^stbtt_packedchar) -> i32 ---
     stbtt_PackSetOversampling :: (ctx: ^stbtt_pack_context, h_oversample, v_oversample: i32) -> void ---
 
     stbtt_GetPackedQuad       :: (chardata: ^stbtt_packedchar, pw, ph: i32, char_index: i32, xpos, ypos: ^f32, quad: ^stbtt_aligned_quad, align_to_integer: bool) -> void ---
 }
-
-#export "stbtt_heap_alloc" calloc
-#export "stbtt_heap_free"  cfree

@@ -1,13 +1,44 @@
 #load "core/std"
+#load "./module"
 
 use core {package, *}
 use cbindgen {*}
+use stb_truetype
 
-main :: (args) => {
+main :: () {
     path := module_path(#file);
 
-    result := compile_c_file(string.concat(path, "stb_truetype.c"), string.concat(path, "stb_truetype"));
+    c_file_path := string.concat(path, "onyx_stbtt.c");
+
+    result := generate_c_binding(.{
+        output_file = c_file_path,
+        foreign_block = stb_truetype.foreign_block,
+
+        preamble = .[
+"""
+#define ONYX_LIBRARY_NAME stb_truetype
+#define ONYX_HEAP_FUNCTIONS
+#include "onyx_library.h"
+
+#define STBTT_malloc(s, ud) __onyx_heap_resize(NULL, s)
+#define STBTT_free(p, ud)   __onyx_heap_free(p)
+
+#define STB_TRUETYPE_IMPLEMENTATION
+#define STB_RECT_PACK_IMPLEMENTATION
+#include "stb_rect_pack.h"
+#include "stb_truetype.h"
+"""
+        ],
+    });
+
     if !result {
         os.exit(1);
     }
+
+    result = compile_c_file(c_file_path, string.concat(path, "stb_truetype"));
+    if !result {
+        os.exit(1);
+    }
+
+    os.remove_file(c_file_path);
 }
