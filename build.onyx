@@ -17,11 +17,7 @@ main :: () {
         preamble = .[
 """
 #define ONYX_LIBRARY_NAME stb_truetype
-#define ONYX_HEAP_FUNCTIONS
 #include "onyx_library.h"
-
-#define STBTT_malloc(s, ud) __onyx_heap_resize(NULL, s)
-#define STBTT_free(p, ud)   __onyx_heap_free(p)
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #define STB_RECT_PACK_IMPLEMENTATION
