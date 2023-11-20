@@ -1,4 +1,3 @@
-#load "core/std"
 #load "./module"
 
 use core {package, *}
