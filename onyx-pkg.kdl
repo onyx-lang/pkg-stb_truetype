@@ -1,0 +1,18 @@
+package {
+    name "stb_truetype" 
+    author "Brendan Hansen" 
+    url "git://onyxlang.io/repo/stb_truetype" 
+    description "stb_truetype.h binding for Onyx (very imcomplete)" 
+    version "0.0.6" 
+}
+
+config {
+    dependency_source_path "./lib" 
+    dependency_binary_path "./bin" 
+}
+
+native {
+    library "stb_truetype" 
+    build "onyx run build --generate-foreign-info" 
+}
+
