@@ -3,7 +3,7 @@ package {
     author "Brendan Hansen" 
     url "git://onyxlang.io/repo/stb_truetype" 
     description "stb_truetype.h binding for Onyx (very imcomplete)" 
-    version "0.0.6" 
+    version "0.0.7" 
 }
 
 config {
